@@ -12,7 +12,7 @@
     "build": "rsbuild build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src --max-warnings=0",
     "patch-package": "patch-package",
-    "postinstall": "npm install --legacy-peer-deps --force"
+    "postinstall": "npm install --legacy-peer-deps --force > /dev/null 2>&1"
   },
   "prettier": "@elice/prettier-config",
   "dependencies": {
