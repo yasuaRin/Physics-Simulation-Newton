@@ -10,6 +10,7 @@
   "scripts": {
     "start": "rsbuild dev",
     "build": "rsbuild build",
+    "preview": "rsbuild preview",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src --max-warnings=0",
     "patch-package": "patch-package"
   },
