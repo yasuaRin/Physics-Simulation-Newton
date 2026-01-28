@@ -11,7 +11,8 @@
     "start": "rsbuild dev",
     "build": "rsbuild build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src --max-warnings=0",
-    "patch-package": "patch-package"
+    "patch-package": "patch-package",
+    "postinstall": "npm install --legacy-peer-deps"
   },
   "prettier": "@elice/prettier-config",
   "dependencies": {
