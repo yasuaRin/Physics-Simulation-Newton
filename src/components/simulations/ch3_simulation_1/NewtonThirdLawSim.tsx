@@ -20,9 +20,11 @@ import {
   Container,
   Divider,
   Alert,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
-import { 
-  PlayArrow, 
+import {
+  PlayArrow,
   Replay,
   Info,
   Science,
@@ -33,26 +35,28 @@ import {
   EmojiEvents,
   Star,
   FlashOn,
+  Pause,
+  Speed,
 } from '@mui/icons-material';
 
-const InteractiveForceCard = ({ 
-  label, 
-  value, 
-  unit, 
+const InteractiveForceCard = ({
+  label,
+  value,
+  unit,
   color,
   type,
   isActive,
-}: { 
-  label: string; 
-  value: string; 
-  unit: string; 
+}: {
+  label: string;
+  value: string;
+  unit: string;
   color: string;
   type: 'action' | 'reaction';
   isActive: boolean;
 }) => (
   <Grow in timeout={500}>
-    <Card 
-      sx={{ 
+    <Card
+      sx={{
         minWidth: { xs: 100, sm: 130, md: 160 },
         maxWidth: { xs: 140, sm: 170, md: 200 },
         bgcolor: 'background.paper',
@@ -65,9 +69,9 @@ const InteractiveForceCard = ({
       }}
     >
       <CardContent sx={{ p: { xs: 1.2, sm: 1.5, md: 1.8 }, '&:last-child': { pb: { xs: 1.2, sm: 1.5, md: 1.8 } } }}>
-        <Typography 
-          variant="caption" 
-          sx={{ 
+        <Typography
+          variant="caption"
+          sx={{
             color: 'text.secondary',
             fontWeight: 700,
             textTransform: 'uppercase',
@@ -80,9 +84,9 @@ const InteractiveForceCard = ({
           {label}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 0.6, mb: 1 }}>
-          <Typography 
-            variant="h4" 
-            sx={{ 
+          <Typography
+            variant="h4"
+            sx={{
               color,
               fontWeight: 800,
               fontFamily: 'monospace',
@@ -128,8 +132,8 @@ const QuizPanel = ({ type, onComplete }: { type: 'hammer' | 'orbit'; onComplete:
   const [showResult, setShowResult] = useState(false);
   const [pointsEarned, setPointsEarned] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  
-  const questions = type === 'hammer' 
+
+  const questions = type === 'hammer'
     ? [
         {
           question: "What happens to the nail when the hammer strikes it?",
@@ -193,17 +197,14 @@ const QuizPanel = ({ type, onComplete }: { type: 'hammer' | 'orbit'; onComplete:
 
   const handleAnswer = (index: number) => {
     if (showResult) return;
-    
     setSelectedAnswer(index);
     setShowResult(true);
-    
     const question = questions[currentQuestion];
     if (index === question.correct) {
       const points = question.points;
       setPointsEarned(points);
       onComplete(points);
     }
-    
     setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
@@ -242,7 +243,6 @@ const QuizPanel = ({ type, onComplete }: { type: 'hammer' | 'orbit'; onComplete:
           <Quiz sx={{ fontSize: { xs: 18, sm: 20 } }} />
         </IconButton>
       </Tooltip>
-
       {open && (
         <Fade in timeout={300}>
           <Paper
@@ -263,9 +263,9 @@ const QuizPanel = ({ type, onComplete }: { type: 'hammer' | 'orbit'; onComplete:
               <Stack spacing={2}>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <EmojiEvents sx={{ color: '#ff9800', fontSize: 22 }} />
-                  <Typography 
-                    variant="h6" 
-                    sx={{ 
+                  <Typography
+                    variant="h6"
+                    sx={{
                       color: '#ff9800',
                       fontWeight: 700,
                       fontSize: { xs: '0.9rem', sm: '1rem' },
@@ -274,9 +274,9 @@ const QuizPanel = ({ type, onComplete }: { type: 'hammer' | 'orbit'; onComplete:
                     Physics Challenge
                   </Typography>
                 </Stack>
-                <Typography 
-                  variant="body2" 
-                  sx={{ 
+                <Typography
+                  variant="body2"
+                  sx={{
                     color: 'text.secondary',
                     lineHeight: 1.6,
                     fontSize: { xs: '0.75rem', sm: '0.85rem' },
@@ -315,9 +315,9 @@ const QuizPanel = ({ type, onComplete }: { type: 'hammer' | 'orbit'; onComplete:
             ) : (
               <Stack spacing={2}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography 
-                    variant="h6" 
-                    sx={{ 
+                  <Typography
+                    variant="h6"
+                    sx={{
                       color: 'primary.main',
                       fontWeight: 700,
                       fontSize: { xs: '0.9rem', sm: '1rem' },
@@ -337,9 +337,9 @@ const QuizPanel = ({ type, onComplete }: { type: 'hammer' | 'orbit'; onComplete:
                     }}
                   />
                 </Stack>
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
+                <Typography
+                  variant="body1"
+                  sx={{
                     color: 'text.primary',
                     fontWeight: 600,
                     fontSize: { xs: '0.85rem', sm: '0.95rem' },
@@ -359,22 +359,22 @@ const QuizPanel = ({ type, onComplete }: { type: 'hammer' | 'orbit'; onComplete:
                         textAlign: 'left',
                         fontSize: { xs: '0.75rem', sm: '0.85rem' },
                         py: 0.8,
-                        bgcolor: showResult 
-                          ? index === questions[currentQuestion].correct 
-                            ? '#4caf50' 
-                            : selectedAnswer === index 
-                              ? '#f44336' 
-                              : 'transparent'
-                          : selectedAnswer === index 
-                            ? 'primary.main' 
-                            : 'transparent',
-                        color: showResult 
-                          ? index === questions[currentQuestion].correct || selectedAnswer === index 
-                            ? 'white' 
+                        bgcolor: showResult
+                          ? index === questions[currentQuestion].correct
+                            ? '#4caf50'
+                            : selectedAnswer === index
+                            ? '#f44336'
+                            : 'transparent'
+                          : selectedAnswer === index
+                          ? 'primary.main'
+                          : 'transparent',
+                        color: showResult
+                          ? index === questions[currentQuestion].correct || selectedAnswer === index
+                            ? 'white'
                             : 'text.primary'
-                          : selectedAnswer === index 
-                            ? 'white' 
-                            : 'text.primary',
+                          : selectedAnswer === index
+                          ? 'white'
+                          : 'text.primary',
                         borderColor: selectedAnswer === index ? 'primary.main' : 'divider',
                         '&:hover': {
                           bgcolor: selectedAnswer === index ? 'primary.dark' : 'action.hover',
@@ -388,15 +388,15 @@ const QuizPanel = ({ type, onComplete }: { type: 'hammer' | 'orbit'; onComplete:
                 {showResult && (
                   <Fade in>
                     <Stack spacing={1}>
-                      <Alert 
+                      <Alert
                         severity={selectedAnswer === questions[currentQuestion].correct ? "success" : "error"}
-                        sx={{ 
+                        sx={{
                           py: 0.5,
                           fontSize: { xs: '0.75rem', sm: '0.85rem' },
                         }}
                       >
-                        {selectedAnswer === questions[currentQuestion].correct 
-                          ? `Correct! +${questions[currentQuestion].points} stars` 
+                        {selectedAnswer === questions[currentQuestion].correct
+                          ? `Correct! +${questions[currentQuestion].points} stars`
                           : "Incorrect"}
                       </Alert>
                       <Paper
@@ -409,23 +409,23 @@ const QuizPanel = ({ type, onComplete }: { type: 'hammer' | 'orbit'; onComplete:
                           borderColor: 'divider',
                         }}
                       >
-                        <Typography 
-                          variant="body2" 
-                          sx={{ 
+                        <Typography
+                          variant="body2"
+                          sx={{
                             color: 'text.secondary',
                             fontSize: { xs: '0.7rem', sm: '0.8rem' },
                             lineHeight: 1.5,
                           }}
                         >
                           <Box component="span" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                            Explanation: 
+                            Explanation:
                           </Box> {questions[currentQuestion].explanation}
                         </Typography>
                       </Paper>
                       {currentQuestion === questions.length - 1 && (
-                        <Typography 
-                          variant="body2" 
-                          sx={{ 
+                        <Typography
+                          variant="body2"
+                          sx={{
                             color: 'text.primary',
                             fontWeight: 600,
                             textAlign: 'center',
@@ -451,8 +451,8 @@ const InfoPanel = ({ type }: { type: 'hammer' | 'orbit' }) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  
-  const content = type === 'hammer' 
+
+  const content = type === 'hammer'
     ? {
         title: 'Contact Force (Impact)',
         formula: 'F = m × a',
@@ -497,7 +497,6 @@ const InfoPanel = ({ type }: { type: 'hammer' | 'orbit' }) => {
           <Info sx={{ fontSize: { xs: 18, sm: 20 } }} />
         </IconButton>
       </Tooltip>
-
       {open && (
         <Fade in timeout={300}>
           <Paper
@@ -516,9 +515,9 @@ const InfoPanel = ({ type }: { type: 'hammer' | 'orbit' }) => {
           >
             <Stack spacing={1.5}>
               <Box>
-                <Typography 
-                  variant="h6" 
-                  sx={{ 
+                <Typography
+                  variant="h6"
+                  sx={{
                     color: 'primary.main',
                     fontWeight: 700,
                     mb: 0.5,
@@ -527,17 +526,17 @@ const InfoPanel = ({ type }: { type: 'hammer' | 'orbit' }) => {
                 >
                   {content.title}
                 </Typography>
-                <Box sx={{ 
-                  bgcolor: 'grey.50', 
-                  p: { xs: 1, sm: 1.2 }, 
+                <Box sx={{
+                  bgcolor: 'grey.50',
+                  p: { xs: 1, sm: 1.2 },
                   borderRadius: 2,
                   border: '1px solid',
                   borderColor: 'divider',
                   my: 1,
                 }}>
-                  <Typography 
-                    variant="h5" 
-                    sx={{ 
+                  <Typography
+                    variant="h5"
+                    sx={{
                       fontFamily: 'monospace',
                       fontWeight: 700,
                       color: 'primary.main',
@@ -548,9 +547,9 @@ const InfoPanel = ({ type }: { type: 'hammer' | 'orbit' }) => {
                     {content.formula}
                   </Typography>
                 </Box>
-                <Typography 
-                  variant="body2" 
-                  sx={{ 
+                <Typography
+                  variant="body2"
+                  sx={{
                     color: 'text.secondary',
                     lineHeight: 1.6,
                     fontSize: { xs: '0.75rem', sm: '0.8rem' },
@@ -559,9 +558,7 @@ const InfoPanel = ({ type }: { type: 'hammer' | 'orbit' }) => {
                   {content.description}
                 </Typography>
               </Box>
-
               <Divider />
-
               <Stack spacing={0.8}>
                 {content.points.map((point, i) => (
                   <Stack key={i} direction="row" spacing={1} alignItems="flex-start">
@@ -575,9 +572,9 @@ const InfoPanel = ({ type }: { type: 'hammer' | 'orbit' }) => {
                         flexShrink: 0,
                       }}
                     />
-                    <Typography 
+                    <Typography
                       variant="body2"
-                      sx={{ 
+                      sx={{
                         color: 'text.primary',
                         lineHeight: 1.5,
                         fontSize: { xs: '0.7rem', sm: '0.75rem' },
@@ -637,8 +634,8 @@ const InteractiveSlider = ({
       <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1.5}>
         <Stack direction="row" spacing={1} alignItems="center">
           {icon && (
-            <Box sx={{ 
-              color: color, 
+            <Box sx={{
+              color: color,
               display: 'flex',
               '& .MuiSvgIcon-root': {
                 fontSize: { xs: 16, sm: 18 }
@@ -647,12 +644,12 @@ const InteractiveSlider = ({
               {icon}
             </Box>
           )}
-          <Typography 
+          <Typography
             variant="body2"
-            sx={{ 
-              fontWeight: 700, 
-              color: 'text.primary', 
-              fontSize: { xs: '0.75rem', sm: '0.85rem' } 
+            sx={{
+              fontWeight: 700,
+              color: 'text.primary',
+              fontSize: { xs: '0.75rem', sm: '0.85rem' }
             }}
           >
             {label}
@@ -680,7 +677,7 @@ const InteractiveSlider = ({
         min={min}
         max={max}
         disabled={disabled}
-        sx={{ 
+        sx={{
           color: color,
           height: 6,
           '& .MuiSlider-thumb': {
@@ -724,6 +721,7 @@ const HammerSimulation = () => {
   const [showCelebration, setShowCelebration] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
+
   const stateRef = useRef({
     hammerY: 100,
     nailY: 300,
@@ -766,34 +764,30 @@ const HammerSimulation = () => {
   };
 
   const drawArrow = (
-    ctx: CanvasRenderingContext2D, 
-    fromX: number, 
-    fromY: number, 
-    toX: number, 
-    toY: number, 
-    color: string, 
+    ctx: CanvasRenderingContext2D,
+    fromX: number,
+    fromY: number,
+    toX: number,
+    toY: number,
+    color: string,
     label: string
   ) => {
     const headlen = 14;
     const angle = Math.atan2(toY - fromY, toX - fromX);
-    
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     ctx.lineWidth = 6;
     ctx.shadowBlur = 10;
     ctx.shadowColor = color;
-    
     ctx.beginPath();
     ctx.moveTo(fromX, fromY);
     ctx.lineTo(toX, toY);
     ctx.stroke();
-    
     ctx.beginPath();
     ctx.moveTo(toX, toY);
     ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
     ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
     ctx.fill();
-    
     ctx.shadowBlur = 0;
     ctx.font = 'bold 18px Arial, sans-serif';
     ctx.fillText(label, toX + 22, (fromY + toY) / 2);
@@ -802,7 +796,7 @@ const HammerSimulation = () => {
   const draw = useCallback((ctx: CanvasRenderingContext2D) => {
     const { width, height } = ctx.canvas;
     const state = stateRef.current;
-    
+
     ctx.clearRect(0, 0, width, height);
 
     ctx.fillStyle = '#8B4513';
@@ -815,7 +809,7 @@ const HammerSimulation = () => {
     const nailX = width / 2;
     const nailHeight = 60;
     const currentNailY = state.nailY;
-    
+
     ctx.fillStyle = '#94a3b8';
     ctx.shadowBlur = 8;
     ctx.shadowColor = 'rgba(0,0,0,0.35)';
@@ -857,8 +851,8 @@ const HammerSimulation = () => {
         setIsStriking(false);
       }
     }
-    hammerY = state.hammerY;
 
+    hammerY = state.hammerY;
     ctx.fillStyle = '#475569';
     ctx.shadowBlur = 12;
     ctx.shadowColor = 'rgba(0,0,0,0.4)';
@@ -886,21 +880,20 @@ const HammerSimulation = () => {
       animationRef.current = requestAnimationFrame(render);
     };
     render();
-
     return () => cancelAnimationFrame(animationRef.current);
   }, [draw]);
 
   return (
     <Container maxWidth={false} disableGutters sx={{ height: '100%' }}>
-      <Box sx={{ 
-        display: 'flex', 
-        flexDirection: { xs: 'column', md: 'row' }, 
+      <Box sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
         height: '100%',
         gap: { xs: 2, md: 0 },
       }}>
-        <Paper 
+        <Paper
           elevation={0}
-          sx={{ 
+          sx={{
             width: { xs: '100%', md: 340 },
             p: { xs: 1.5, sm: 2, md: 2.5 },
             overflowY: 'auto',
@@ -915,9 +908,9 @@ const HammerSimulation = () => {
         >
           <Stack direction="row" alignItems="center" spacing={1} mb={0.5}>
             <Build sx={{ color: 'primary.main', fontSize: { xs: 20, sm: 24 } }} />
-            <Typography 
-              variant="h6" 
-              sx={{ 
+            <Typography
+              variant="h6"
+              sx={{
                 color: 'text.primary',
                 fontWeight: 700,
                 fontSize: { xs: '1rem', sm: '1.1rem' },
@@ -926,9 +919,9 @@ const HammerSimulation = () => {
               Example 1: Contact Force
             </Typography>
           </Stack>
-          <Typography 
-            variant="body2" 
-            sx={{ 
+          <Typography
+            variant="body2"
+            sx={{
               color: 'text.secondary',
               lineHeight: 1.6,
               mb: 2.5,
@@ -937,7 +930,6 @@ const HammerSimulation = () => {
           >
             Adjust the hammer's properties and observe equal action-reaction forces during impact.
           </Typography>
-          
           <Stack spacing={2}>
             <InteractiveSlider
               label="Hammer Mass"
@@ -950,7 +942,6 @@ const HammerSimulation = () => {
               disabled={isStriking}
               icon={<Build />}
             />
-            
             <InteractiveSlider
               label="Swing Speed"
               value={velocity}
@@ -963,7 +954,6 @@ const HammerSimulation = () => {
               icon={<Rocket />}
             />
           </Stack>
-          
           <Stack direction="row" spacing={1.5} mt={3}>
             <Button
               variant="contained"
@@ -993,12 +983,12 @@ const HammerSimulation = () => {
             >
               {isStriking ? 'Striking...' : 'Strike Nail'}
             </Button>
-            <Button 
-              variant="outlined" 
-              onClick={reset} 
+            <Button
+              variant="outlined"
+              onClick={reset}
               disabled={isStriking}
               size={isMobile ? 'small' : 'medium'}
-              sx={{ 
+              sx={{
                 minWidth: { xs: 48, sm: 56 },
                 borderWidth: 2,
                 borderColor: 'primary.main',
@@ -1017,12 +1007,11 @@ const HammerSimulation = () => {
               <Replay />
             </Button>
           </Stack>
-
           <Paper
             elevation={1}
-            sx={{ 
-              mt: 3, 
-              p: { xs: 1.5, sm: 2 }, 
+            sx={{
+              mt: 3,
+              p: { xs: 1.5, sm: 2 },
               bgcolor: 'grey.50',
               borderRadius: 2,
               border: '2px solid',
@@ -1030,9 +1019,9 @@ const HammerSimulation = () => {
             }}
           >
             <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
-              <Typography 
-                variant="subtitle2" 
-                sx={{ 
+              <Typography
+                variant="subtitle2"
+                sx={{
                   color: 'text.primary',
                   fontWeight: 700,
                   fontSize: { xs: '0.75rem', sm: '0.8rem' },
@@ -1054,9 +1043,9 @@ const HammerSimulation = () => {
               />
             </Stack>
             <Stack direction="row" alignItems="baseline" spacing={1}>
-              <Typography 
-                variant="h4" 
-                sx={{ 
+              <Typography
+                variant="h4"
+                sx={{
                   color: 'primary.main',
                   fontWeight: 800,
                   fontFamily: 'monospace',
@@ -1065,9 +1054,9 @@ const HammerSimulation = () => {
               >
                 {calculateForce()}
               </Typography>
-              <Typography 
-                variant="body2" 
-                sx={{ 
+              <Typography
+                variant="body2"
+                sx={{
                   color: 'text.secondary',
                   fontWeight: 600,
                   fontSize: { xs: '0.8rem', sm: '0.9rem' },
@@ -1076,9 +1065,9 @@ const HammerSimulation = () => {
                 N
               </Typography>
             </Stack>
-            <Typography 
-              variant="caption" 
-              sx={{ 
+            <Typography
+              variant="caption"
+              sx={{
                 color: 'text.disabled',
                 display: 'block',
                 mt: 0.5,
@@ -1089,38 +1078,37 @@ const HammerSimulation = () => {
             </Typography>
           </Paper>
         </Paper>
-        
-        <Box sx={{ 
-          flex: 1, 
-          position: 'relative', 
+        <Box sx={{
+          flex: 1,
+          position: 'relative',
           bgcolor: 'grey.50',
           height: { xs: '55vh', md: '100%' },
           minHeight: { xs: 350, sm: 450 },
           order: { xs: 1, md: 2 },
         }}>
-          <Stack 
+          <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={{ xs: 1, sm: 1.5 }}
             alignItems="center"
             justifyContent="center"
-            sx={{ 
-              position: 'absolute', 
-              top: { xs: 8, sm: 12 }, 
+            sx={{
+              position: 'absolute',
+              top: { xs: 8, sm: 12 },
               left: { xs: 8, sm: 12 },
               right: { xs: 8, sm: 'auto' },
               zIndex: 10,
               width: { xs: 'calc(100% - 16px)', sm: 'auto' },
             }}
           >
-            <InteractiveForceCard 
-              label="Force on Nail" 
-              value={impactData.active ? `${impactData.force}` : '0'} 
+            <InteractiveForceCard
+              label="Force on Nail"
+              value={impactData.active ? `${impactData.force}` : '0'}
               unit="N"
               color="#ef4444"
               type="action"
               isActive={impactData.active}
             />
-            <Typography 
+            <Typography
               variant="h3"
               sx={{
                 color: 'primary.main',
@@ -1132,42 +1120,39 @@ const HammerSimulation = () => {
             >
               =
             </Typography>
-            <InteractiveForceCard 
-              label="Force on Hammer" 
-              value={impactData.active ? `${impactData.force}` : '0'} 
+            <InteractiveForceCard
+              label="Force on Hammer"
+              value={impactData.active ? `${impactData.force}` : '0'}
               unit="N"
               color="#1976d2"
               type="reaction"
               isActive={impactData.active}
             />
           </Stack>
-
-          <Stack 
+          <Stack
             direction="row"
             spacing={1}
-            sx={{ 
-              position: 'absolute', 
-              bottom: { xs: 8, sm: 12 }, 
-              right: { xs: 8, sm: 12 }, 
-              zIndex: 10 
+            sx={{
+              position: 'absolute',
+              bottom: { xs: 8, sm: 12 },
+              right: { xs: 8, sm: 12 },
+              zIndex: 10
             }}
           >
             <QuizPanel type="hammer" onComplete={handleQuizComplete} />
             <InfoPanel type="hammer" />
           </Stack>
-          
-          <canvas 
-            ref={canvasRef} 
-            width={800} 
-            height={600} 
-            style={{ 
-              width: '100%', 
-              height: '100%', 
+          <canvas
+            ref={canvasRef}
+            width={800}
+            height={600}
+            style={{
+              width: '100%',
+              height: '100%',
               display: 'block',
               objectFit: 'contain',
-            }} 
+            }}
           />
-          
           {!isStriking && impactData.force === 0 && (
             <Fade in timeout={800}>
               <Paper
@@ -1188,9 +1173,9 @@ const HammerSimulation = () => {
                   maxWidth: 350,
                 }}
               >
-                <Typography 
-                  variant="body1" 
-                  sx={{ 
+                <Typography
+                  variant="body1"
+                  sx={{
                     color: 'primary.main',
                     fontWeight: 700,
                     textAlign: 'center',
@@ -1202,7 +1187,6 @@ const HammerSimulation = () => {
               </Paper>
             </Fade>
           )}
-
           {showCelebration && (
             <Fade in timeout={500}>
               <Box
@@ -1240,21 +1224,32 @@ const HammerSimulation = () => {
 };
 
 const OrbitSimulation = () => {
-  const [earthMass, setEarthMass] = useState(5);
-  const [moonMass, setMoonMass] = useState(2);
-  const [distance, setDistance] = useState(200);
+  const [earthMass, setEarthMass] = useState(5.97);
+  const [moonMass, setMoonMass] = useState(7.35);
+  const [distance, setDistance] = useState(384);
   const [userPoints, setUserPoints] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [showVectors, setShowVectors] = useState(true);
+  const [showOrbitPath, setShowOrbitPath] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
   const angleRef = useRef(0);
-
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
+  const GRAVITATIONAL_CONSTANT = 6.67430e-11;
+  const EARTH_MASS_SCALE = 1e24;
+  const MOON_MASS_SCALE = 1e22;
+  const DISTANCE_SCALE = 1e6;
+  const FORCE_SCALE = 1e16;
+
   const calculateGravity = () => {
-    const G = 2000;
-    return Math.round((G * earthMass * moonMass) / (distance * 0.5));
+    const m1 = earthMass * EARTH_MASS_SCALE;
+    const m2 = moonMass * MOON_MASS_SCALE;
+    const r = distance * DISTANCE_SCALE;
+    const force = (GRAVITATIONAL_CONSTANT * m1 * m2) / (r * r);
+    return Math.round(force / FORCE_SCALE);
   };
 
   const handleQuizComplete = (points: number) => {
@@ -1264,122 +1259,185 @@ const OrbitSimulation = () => {
   };
 
   const drawArrow = (
-    ctx: CanvasRenderingContext2D, 
-    fromX: number, 
-    fromY: number, 
-    toX: number, 
-    toY: number, 
-    color: string, 
+    ctx: CanvasRenderingContext2D,
+    fromX: number,
+    fromY: number,
+    toX: number,
+    toY: number,
+    color: string,
     label: string
   ) => {
-    const headlen = 16;
+    const headlen = 14;
     const angle = Math.atan2(toY - fromY, toX - fromX);
-    
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
-    ctx.lineWidth = 7;
-    ctx.shadowBlur = 15;
+    ctx.lineWidth = 5;
+    ctx.shadowBlur = 12;
     ctx.shadowColor = color;
-    
     ctx.beginPath();
     ctx.moveTo(fromX, fromY);
     ctx.lineTo(toX, toY);
     ctx.stroke();
-    
     ctx.beginPath();
     ctx.moveTo(toX, toY);
     ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
     ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
     ctx.fill();
-    
     ctx.shadowBlur = 0;
-    ctx.font = 'bold 16px Arial, sans-serif';
+    ctx.font = 'bold 14px Arial, sans-serif';
     ctx.fillStyle = color;
-    ctx.fillText(label, toX + Math.cos(angle) * 28, toY + Math.sin(angle) * 28);
+    ctx.fillText(label, toX + Math.cos(angle) * 20, toY + Math.sin(angle) * 20);
   };
 
   const draw = useCallback((ctx: CanvasRenderingContext2D) => {
     const { width, height } = ctx.canvas;
     const centerX = width / 2;
     const centerY = height / 2;
-    
+
     ctx.clearRect(0, 0, width, height);
-    
-    angleRef.current += 0.005 + (100 / distance) * 0.005;
-    
-    const earthRadius = 20 + earthMass * 4;
-    const moonX = centerX + Math.cos(angleRef.current) * distance;
-    const moonY = centerY + Math.sin(angleRef.current) * distance;
-    const moonRadius = 10 + moonMass * 2;
-    
-    ctx.beginPath();
-    ctx.strokeStyle = '#78909c';
-    ctx.setLineDash([8, 8]);
-    ctx.lineWidth = 2;
-    ctx.arc(centerX, centerY, distance, 0, Math.PI * 2, false);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    
-    ctx.beginPath();
-    ctx.strokeStyle = '#90a4ae';
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([4, 4]);
-    ctx.moveTo(centerX, centerY);
-    ctx.lineTo(moonX, moonY);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    
+
+    const gradient = ctx.createLinearGradient(0, 0, width, height);
+    gradient.addColorStop(0, '#0a1929');
+    gradient.addColorStop(1, '#1a2a3a');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+
+    for (let i = 0; i < 100; i++) {
+      const starX = Math.random() * width;
+      const starY = Math.random() * height;
+      const starSize = Math.random() * 2;
+      ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.8 + 0.2})`;
+      ctx.beginPath();
+      ctx.arc(starX, starY, starSize, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    if (isPlaying) {
+      const orbitalSpeed = 0.0005 * (1 + (earthMass + moonMass) / 10) * (400 / distance);
+      angleRef.current += orbitalSpeed;
+    }
+
+    const earthRadius = Math.max(25, 15 + earthMass * 1.5);
+    const moonRadius = Math.max(10, 8 + moonMass * 0.8);
+    const scaledDistance = Math.max(150, Math.min(350, distance * 0.8));
+
+    const moonX = centerX + Math.cos(angleRef.current) * scaledDistance;
+    const moonY = centerY + Math.sin(angleRef.current) * scaledDistance;
+
+    if (showOrbitPath) {
+      const orbitGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, scaledDistance + 50);
+      orbitGradient.addColorStop(0, 'rgba(70, 130, 180, 0.1)');
+      orbitGradient.addColorStop(1, 'rgba(70, 130, 180, 0)');
+      ctx.fillStyle = orbitGradient;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, scaledDistance + 30, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(100, 180, 255, 0.08)';
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, scaledDistance + 15, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    if (showOrbitPath) {
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(100, 180, 255, 0.4)';
+      ctx.setLineDash([8, 8]);
+      ctx.lineWidth = 2;
+      ctx.arc(centerX, centerY, scaledDistance, 0, Math.PI * 2, false);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
     const forceMag = calculateGravity();
-    const arrowLength = Math.min(distance - earthRadius - moonRadius, forceMag / 5);
-    
-    const angleToEarth = Math.atan2(centerY - moonY, centerX - moonX);
-    drawArrow(
-      ctx, 
-      moonX, 
-      moonY, 
-      moonX + Math.cos(angleToEarth) * arrowLength, 
-      moonY + Math.sin(angleToEarth) * arrowLength, 
-      '#ef4444', 
-      'Action'
+    const arrowLength = Math.min(scaledDistance - earthRadius - moonRadius - 20, forceMag * 0.3);
+
+    if (showVectors) {
+      const angleToEarth = Math.atan2(centerY - moonY, centerX - moonX);
+      drawArrow(
+        ctx,
+        moonX,
+        moonY,
+        moonX + Math.cos(angleToEarth) * arrowLength,
+        moonY + Math.sin(angleToEarth) * arrowLength,
+        '#ef4444',
+        `F = ${forceMag}×10¹⁶ N`
+      );
+
+      const angleToMoon = Math.atan2(moonY - centerY, moonX - centerX);
+      drawArrow(
+        ctx,
+        centerX,
+        centerY,
+        centerX + Math.cos(angleToMoon) * arrowLength,
+        centerY + Math.sin(angleToMoon) * arrowLength,
+        '#1976d2',
+        `F = ${forceMag}×10¹⁶ N`
+      );
+    }
+
+    const earthGradient = ctx.createRadialGradient(
+      centerX - earthRadius * 0.3,
+      centerY - earthRadius * 0.3,
+      0,
+      centerX,
+      centerY,
+      earthRadius
     );
-    
-    const angleToMoon = Math.atan2(moonY - centerY, moonX - centerX);
-    drawArrow(
-      ctx, 
-      centerX, 
-      centerY, 
-      centerX + Math.cos(angleToMoon) * arrowLength, 
-      centerY + Math.sin(angleToMoon) * arrowLength, 
-      '#1976d2', 
-      'Reaction'
-    );
-    
-    ctx.beginPath();
-    ctx.fillStyle = '#1976d2';
+    earthGradient.addColorStop(0, '#4fc3f7');
+    earthGradient.addColorStop(0.4, '#29b6f6');
+    earthGradient.addColorStop(0.7, '#0288d1');
+    earthGradient.addColorStop(1, '#01579b');
+    ctx.fillStyle = earthGradient;
     ctx.shadowBlur = 30;
-    ctx.shadowColor = 'rgba(25, 118, 210, 0.5)';
+    ctx.shadowColor = 'rgba(41, 182, 246, 0.5)';
+    ctx.beginPath();
     ctx.arc(centerX, centerY, earthRadius, 0, Math.PI * 2);
     ctx.fill();
     ctx.shadowBlur = 0;
-    
-    ctx.fillStyle = 'white';
-    ctx.font = 'bold 14px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('🌍', centerX, centerY);
-    
-    ctx.beginPath();
-    ctx.fillStyle = '#90a4ae';
+
+    const moonGradient = ctx.createRadialGradient(
+      moonX - moonRadius * 0.3,
+      moonY - moonRadius * 0.3,
+      0,
+      moonX,
+      moonY,
+      moonRadius
+    );
+    moonGradient.addColorStop(0, '#e0e0e0');
+    moonGradient.addColorStop(0.5, '#9e9e9e');
+    moonGradient.addColorStop(1, '#616161');
+    ctx.fillStyle = moonGradient;
     ctx.shadowBlur = 20;
-    ctx.shadowColor = 'rgba(144, 164, 174, 0.4)';
+    ctx.shadowColor = 'rgba(255, 255, 255, 0.3)';
+    ctx.beginPath();
     ctx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2);
     ctx.fill();
     ctx.shadowBlur = 0;
-    
-    ctx.fillStyle = 'white';
-    ctx.font = 'bold 16px Arial';
+
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+    ctx.font = 'bold 24px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🌍', centerX, centerY);
+    ctx.font = 'bold 18px Arial, sans-serif';
     ctx.fillText('🌕', moonX, moonY);
-  }, [earthMass, moonMass, distance]);
+
+    if (showVectors) {
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(moonX, moonY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.font = 'bold 12px Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${distance}×10⁶ m`, (centerX + moonX) / 2, (centerY + moonY) / 2 - 10);
+    }
+  }, [earthMass, moonMass, distance, isPlaying, showVectors, showOrbitPath]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -1392,22 +1450,28 @@ const OrbitSimulation = () => {
       animationRef.current = requestAnimationFrame(render);
     };
     render();
-
     return () => cancelAnimationFrame(animationRef.current);
   }, [draw]);
 
+  const resetSimulation = () => {
+    angleRef.current = 0;
+    setEarthMass(5.97);
+    setMoonMass(7.35);
+    setDistance(384);
+  };
+
   return (
     <Container maxWidth={false} disableGutters sx={{ height: '100%' }}>
-      <Box sx={{ 
-        display: 'flex', 
-        flexDirection: { xs: 'column', md: 'row' }, 
+      <Box sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
         height: '100%',
         gap: { xs: 2, md: 0 },
       }}>
-        <Paper 
+        <Paper
           elevation={0}
-          sx={{ 
-            width: { xs: '100%', md: 340 },
+          sx={{
+            width: { xs: '100%', md: 380 },
             p: { xs: 1.5, sm: 2, md: 2.5 },
             overflowY: 'auto',
             bgcolor: 'background.paper',
@@ -1421,9 +1485,9 @@ const OrbitSimulation = () => {
         >
           <Stack direction="row" alignItems="center" spacing={1} mb={0.5}>
             <Public sx={{ color: 'primary.main', fontSize: { xs: 20, sm: 24 } }} />
-            <Typography 
-              variant="h6" 
-              sx={{ 
+            <Typography
+              variant="h6"
+              sx={{
                 color: 'text.primary',
                 fontWeight: 700,
                 fontSize: { xs: '1rem', sm: '1.1rem' },
@@ -1432,68 +1496,94 @@ const OrbitSimulation = () => {
               Example 2: Gravitational Force
             </Typography>
           </Stack>
-          <Typography 
-            variant="body2" 
-            sx={{ 
+          <Typography
+            variant="body2"
+            sx={{
               color: 'text.secondary',
               lineHeight: 1.6,
               mb: 2.5,
               fontSize: { xs: '0.75rem', sm: '0.85rem' },
             }}
           >
-            Explore how gravitational forces act equally between Earth and Moon, even at a distance.
+            Explore how Earth and Moon attract each other with equal gravitational forces, demonstrating Newton's Third Law across vast distances.
           </Typography>
-          
           <Stack spacing={2}>
             <InteractiveSlider
               label="Earth Mass"
               value={earthMass}
-              onChange={setEarthMass}
+              onChange={(v) => setEarthMass(parseFloat(v.toFixed(2)))}
               min={1}
               max={10}
               unit="× 10²⁴ kg"
               color="#1976d2"
               icon={<Public />}
             />
-            
             <InteractiveSlider
               label="Moon Mass"
               value={moonMass}
-              onChange={setMoonMass}
+              onChange={(v) => setMoonMass(parseFloat(v.toFixed(2)))}
               min={1}
               max={10}
               unit="× 10²² kg"
               color="#607d8b"
               icon={<Public sx={{ transform: 'scale(0.8)' }} />}
             />
-            
             <InteractiveSlider
               label="Distance"
               value={distance}
-              onChange={setDistance}
-              min={120}
-              max={350}
+              onChange={(v) => setDistance(parseFloat(v.toFixed(1)))}
+              min={150}
+              max={600}
               unit="× 10⁶ m"
               color="#43a047"
               icon={<Rocket />}
             />
           </Stack>
-
+          <Stack direction="row" spacing={1} mt={2} mb={1}>
+            <Button
+              variant={isPlaying ? "contained" : "outlined"}
+              onClick={() => setIsPlaying(!isPlaying)}
+              startIcon={isPlaying ? <Pause /> : <PlayArrow />}
+              size="small"
+              sx={{
+                flex: 1,
+                fontWeight: 700,
+                fontSize: '0.75rem',
+                textTransform: 'none',
+                borderRadius: 1.5,
+              }}
+            >
+              {isPlaying ? "Pause" : "Play"}
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={resetSimulation}
+              size="small"
+              sx={{
+                fontWeight: 700,
+                fontSize: '0.75rem',
+                textTransform: 'none',
+                borderRadius: 1.5,
+              }}
+            >
+              Reset
+            </Button>
+          </Stack>
           <Paper
             elevation={1}
-            sx={{ 
-              mt: 3, 
-              p: { xs: 1.5, sm: 2 }, 
+            sx={{
+              p: { xs: 1.5, sm: 2 },
               bgcolor: 'grey.50',
               borderRadius: 2,
               border: '2px solid',
               borderColor: 'divider',
+              mb: 2,
             }}
           >
             <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
-              <Typography 
-                variant="subtitle2" 
-                sx={{ 
+              <Typography
+                variant="subtitle2"
+                sx={{
                   color: 'text.primary',
                   fontWeight: 700,
                   fontSize: { xs: '0.75rem', sm: '0.8rem' },
@@ -1515,9 +1605,9 @@ const OrbitSimulation = () => {
               />
             </Stack>
             <Stack direction="row" alignItems="baseline" spacing={1}>
-              <Typography 
-                variant="h4" 
-                sx={{ 
+              <Typography
+                variant="h4"
+                sx={{
                   color: 'primary.main',
                   fontWeight: 800,
                   fontFamily: 'monospace',
@@ -1526,20 +1616,20 @@ const OrbitSimulation = () => {
               >
                 {calculateGravity()}
               </Typography>
-              <Typography 
-                variant="body2" 
-                sx={{ 
+              <Typography
+                variant="body2"
+                sx={{
                   color: 'text.secondary',
                   fontWeight: 600,
                   fontSize: { xs: '0.8rem', sm: '0.9rem' },
                 }}
               >
-                N
+                ×10¹⁶ N
               </Typography>
             </Stack>
-            <Typography 
-              variant="caption" 
-              sx={{ 
+            <Typography
+              variant="caption"
+              sx={{
                 color: 'text.disabled',
                 display: 'block',
                 mt: 0.5,
@@ -1549,39 +1639,138 @@ const OrbitSimulation = () => {
               Equal force on both Earth and Moon
             </Typography>
           </Paper>
+          <Stack spacing={1.5}>
+            <Box sx={{ bgcolor: 'grey.50', p: 1.5, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+              <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1}>
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <Speed sx={{ color: 'primary.main', fontSize: 18 }} />
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontWeight: 700,
+                      color: 'text.primary',
+                      fontSize: '0.8rem',
+                    }}
+                  >
+                    Visualization Options
+                  </Typography>
+                </Stack>
+              </Stack>
+              <Stack spacing={1}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={showVectors}
+                      onChange={(e) => setShowVectors(e.target.checked)}
+                      size="small"
+                      sx={{
+                        '& .MuiSwitch-switchBase.Mui-checked': {
+                          color: '#1976d2',
+                        },
+                        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                          bgcolor: '#1976d2',
+                        },
+                      }}
+                    />
+                  }
+                  label={
+                    <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>
+                      Show Force Vectors
+                    </Typography>
+                  }
+                  sx={{ ml: 0, mr: 0 }}
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={showOrbitPath}
+                      onChange={(e) => setShowOrbitPath(e.target.checked)}
+                      size="small"
+                      sx={{
+                        '& .MuiSwitch-switchBase.Mui-checked': {
+                          color: '#43a047',
+                        },
+                        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                          bgcolor: '#43a047',
+                        },
+                      }}
+                    />
+                  }
+                  label={
+                    <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>
+                      Show Orbit Path
+                    </Typography>
+                  }
+                  sx={{ ml: 0, mr: 0 }}
+                />
+              </Stack>
+            </Box>
+            {/* <Paper
+              elevation={0}
+              sx={{
+                p: 1.5,
+                bgcolor: 'info.light',
+                borderRadius: 2,
+                border: '1px solid',
+                borderColor: 'info.main',
+              }}
+            > */}
+              {/* <Typography
+                variant="caption"
+                sx={{
+                  color: 'info.dark',
+                  fontWeight: 600,
+                  fontSize: '0.75rem',
+                  display: 'block',
+                  mb: 0.5,
+                }}
+              >
+                Scientific Note:
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: 'info.dark',
+                  fontSize: '0.7rem',
+                  lineHeight: 1.5,
+                }}
+              >
+                In reality, both bodies orbit around their common center of mass (barycenter). The force calculation uses F = G(m₁m₂)/r² with proper scaling for educational visualization.
+              </Typography> */}
+            {/* </Paper> */}
+          </Stack>
         </Paper>
-        
-        <Box sx={{ 
-          flex: 1, 
-          position: 'relative', 
+        <Box sx={{
+          flex: 1,
+          position: 'relative',
           bgcolor: '#0a1929',
           height: { xs: '55vh', md: '100%' },
           minHeight: { xs: 350, sm: 450 },
           order: { xs: 1, md: 2 },
         }}>
-          <Stack 
+          <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={{ xs: 1, sm: 1.5 }}
             alignItems="center"
             justifyContent="center"
-            sx={{ 
-              position: 'absolute', 
-              top: { xs: 8, sm: 12 }, 
+            sx={{
+              position: 'absolute',
+              top: { xs: 8, sm: 12 },
               left: { xs: 8, sm: 12 },
               right: { xs: 8, sm: 'auto' },
               zIndex: 10,
               width: { xs: 'calc(100% - 16px)', sm: 'auto' },
             }}
           >
-            <InteractiveForceCard 
-              label="Force on Moon" 
-              value={`${calculateGravity()}`} 
-              unit="N"
+            <InteractiveForceCard
+              label="Force on Moon"
+              value={`${calculateGravity()}`}
+              unit="×10¹⁶ N"
               color="#ef4444"
               type="action"
               isActive={true}
             />
-            <Typography 
+            <Typography
               variant="h3"
               sx={{
                 color: 'white',
@@ -1593,75 +1782,39 @@ const OrbitSimulation = () => {
             >
               =
             </Typography>
-            <InteractiveForceCard 
-              label="Force on Earth" 
-              value={`${calculateGravity()}`} 
-              unit="N"
+            <InteractiveForceCard
+              label="Force on Earth"
+              value={`${calculateGravity()}`}
+              unit="×10¹⁶ N"
               color="#1976d2"
               type="reaction"
               isActive={true}
             />
           </Stack>
-
-          <Stack 
+          <Stack
             direction="row"
             spacing={1}
-            sx={{ 
-              position: 'absolute', 
-              bottom: { xs: 8, sm: 12 }, 
-              right: { xs: 8, sm: 12 }, 
-              zIndex: 10 
+            sx={{
+              position: 'absolute',
+              bottom: { xs: 8, sm: 12 },
+              right: { xs: 8, sm: 12 },
+              zIndex: 10
             }}
           >
             <QuizPanel type="orbit" onComplete={handleQuizComplete} />
             <InfoPanel type="orbit" />
           </Stack>
-
-          <canvas 
-            ref={canvasRef} 
-            width={800} 
-            height={600} 
-            style={{ 
-              width: '100%', 
-              height: '100%', 
+          <canvas
+            ref={canvasRef}
+            width={800}
+            height={600}
+            style={{
+              width: '100%',
+              height: '100%',
               display: 'block',
               objectFit: 'contain',
-            }} 
-          />
-
-          <Paper
-            elevation={8}
-            sx={{
-              position: 'absolute',
-              bottom: { xs: 60, sm: 80 },
-              right: { xs: '50%', sm: 24 },
-              transform: { xs: 'translateX(50%)', sm: 'none' },
-              px: { xs: 1.5, sm: 2 },
-              py: { xs: 1, sm: 1.2 },
-              bgcolor: 'background.paper',
-              borderRadius: 3,
-              border: '3px solid',
-              borderColor: 'primary.main',
-              boxShadow: 6,
-              zIndex: 5,
-              width: { xs: '85%', sm: 'auto' },
-              maxWidth: 240,
-              textAlign: 'center',
             }}
-          >
-            <Typography 
-              variant="h6"
-              sx={{
-                fontFamily: 'monospace',
-                fontWeight: 800,
-                color: 'primary.main',
-                fontSize: { xs: '0.8rem', sm: '0.95rem' },
-              }}
-            >
-              F ∝ (m₁ × m₂) / r²
-            </Typography>
-          </Paper>
-
+          />
           {showCelebration && (
             <Fade in timeout={500}>
               <Box
@@ -1704,10 +1857,10 @@ const NewtonThirdLawSim: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Box 
-      sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
         height: '100vh',
         bgcolor: 'background.default',
         color: 'text.primary',
@@ -1724,7 +1877,7 @@ const NewtonThirdLawSim: React.FC = () => {
           borderColor: 'primary.dark',
         }}
       >
-        <Stack 
+        <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={{ xs: 1.5, sm: 2.5 }}
           alignItems={{ xs: 'flex-start', sm: 'center' }}
@@ -1733,9 +1886,9 @@ const NewtonThirdLawSim: React.FC = () => {
           <Stack direction="row" alignItems="center" spacing={1.2}>
             <Science sx={{ color: 'white', fontSize: { xs: 28, sm: 36 } }} />
             <Box>
-              <Typography 
-                variant={isMobile ? 'h5' : 'h4'} 
-                sx={{ 
+              <Typography
+                variant={isMobile ? 'h5' : 'h4'}
+                sx={{
                   color: 'white',
                   fontWeight: 800,
                   mb: 0.5,
@@ -1744,9 +1897,9 @@ const NewtonThirdLawSim: React.FC = () => {
               >
                 Newton's Third Law
               </Typography>
-              <Typography 
-                variant="body2" 
-                sx={{ 
+              <Typography
+                variant="body2"
+                sx={{
                   color: 'rgba(255,255,255,0.9)',
                   fontWeight: 500,
                   fontSize: { xs: '0.8rem', sm: '0.9rem' },
@@ -1756,7 +1909,6 @@ const NewtonThirdLawSim: React.FC = () => {
               </Typography>
             </Box>
           </Stack>
-          
           <Tabs
             value={activeTab === 'hammer' ? 0 : 1}
             onChange={(_, v) => setActiveTab(v === 0 ? 'hammer' : 'orbit')}
@@ -1788,20 +1940,19 @@ const NewtonThirdLawSim: React.FC = () => {
               }
             }}
           >
-            <Tab 
-              label={isMobile ? "Contact Force" : "Example 1: Contact Force"} 
+            <Tab
+              label={isMobile ? "Contact Force" : "Example 1: Contact Force"}
               icon={isMobile ? <Build sx={{ fontSize: 16 }} /> : undefined}
               iconPosition="start"
             />
-            <Tab 
-              label={isMobile ? "Gravitational" : "Example 2: Gravitational"} 
+            <Tab
+              label={isMobile ? "Gravitational" : "Example 2: Gravitational"}
               icon={isMobile ? <Public sx={{ fontSize: 16 }} /> : undefined}
               iconPosition="start"
             />
           </Tabs>
         </Stack>
       </Paper>
-
       <Box sx={{ flex: 1, overflow: 'hidden' }}>
         {activeTab === 'hammer' ? <HammerSimulation /> : <OrbitSimulation />}
       </Box>
