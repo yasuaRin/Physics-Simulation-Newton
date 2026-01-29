@@ -22,6 +22,12 @@ import {
   Alert,
   Switch,
   FormControlLabel,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  ZoomIn,
+  ZoomOut,
+  Download,
 } from '@mui/material';
 import {
   PlayArrow,
@@ -37,6 +43,7 @@ import {
   FlashOn,
   Pause,
   Speed,
+  Close,
 } from '@mui/icons-material';
 
 const InteractiveForceCard = ({
@@ -721,7 +728,6 @@ const HammerSimulation = () => {
   const [showCelebration, setShowCelebration] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
-
   const stateRef = useRef({
     hammerY: 100,
     nailY: 300,
@@ -729,10 +735,8 @@ const HammerSimulation = () => {
     impactTimer: 0,
     targetNailY: 300,
   });
-
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
   const GROUND_Y = 350;
   const NAIL_HEAD_Y_INITIAL = 300;
 
@@ -796,9 +800,7 @@ const HammerSimulation = () => {
   const draw = useCallback((ctx: CanvasRenderingContext2D) => {
     const { width, height } = ctx.canvas;
     const state = stateRef.current;
-
     ctx.clearRect(0, 0, width, height);
-
     ctx.fillStyle = '#8B4513';
     ctx.fillRect(0, GROUND_Y, width, height - GROUND_Y);
     ctx.fillStyle = '#A0522D';
@@ -853,6 +855,7 @@ const HammerSimulation = () => {
     }
 
     hammerY = state.hammerY;
+
     ctx.fillStyle = '#475569';
     ctx.shadowBlur = 12;
     ctx.shadowColor = 'rgba(0,0,0,0.4)';
@@ -1212,7 +1215,7 @@ const HammerSimulation = () => {
                     },
                   }}
                 >
-                  ⭐ Great Job! ⭐
+                  Great Job!
                 </Typography>
               </Box>
             </Fade>
@@ -1232,12 +1235,12 @@ const OrbitSimulation = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [showVectors, setShowVectors] = useState(true);
   const [showOrbitPath, setShowOrbitPath] = useState(true);
+  const [showTextbookModal, setShowTextbookModal] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
   const angleRef = useRef(0);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
   const GRAVITATIONAL_CONSTANT = 6.67430e-11;
   const EARTH_MASS_SCALE = 1e24;
   const MOON_MASS_SCALE = 1e22;
@@ -1293,7 +1296,6 @@ const OrbitSimulation = () => {
     const { width, height } = ctx.canvas;
     const centerX = width / 2;
     const centerY = height / 2;
-
     ctx.clearRect(0, 0, width, height);
 
     const gradient = ctx.createLinearGradient(0, 0, width, height);
@@ -1320,7 +1322,6 @@ const OrbitSimulation = () => {
     const earthRadius = Math.max(25, 15 + earthMass * 1.5);
     const moonRadius = Math.max(10, 8 + moonMass * 0.8);
     const scaledDistance = Math.max(150, Math.min(350, distance * 0.8));
-
     const moonX = centerX + Math.cos(angleRef.current) * scaledDistance;
     const moonY = centerY + Math.sin(angleRef.current) * scaledDistance;
 
@@ -1705,39 +1706,24 @@ const OrbitSimulation = () => {
                 />
               </Stack>
             </Box>
-            {/* <Paper
-              elevation={0}
-              sx={{
-                p: 1.5,
-                bgcolor: 'info.light',
-                borderRadius: 2,
-                border: '1px solid',
-                borderColor: 'info.main',
-              }}
-            > */}
-              {/* <Typography
-                variant="caption"
-                sx={{
-                  color: 'info.dark',
-                  fontWeight: 600,
-                  fontSize: '0.75rem',
-                  display: 'block',
-                  mb: 0.5,
-                }}
-              >
-                Scientific Note:
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{
-                  color: 'info.dark',
-                  fontSize: '0.7rem',
-                  lineHeight: 1.5,
-                }}
-              >
-                In reality, both bodies orbit around their common center of mass (barycenter). The force calculation uses F = G(m₁m₂)/r² with proper scaling for educational visualization.
-              </Typography> */}
-            {/* </Paper> */}
+
+            <Box sx={{ bgcolor: 'grey.50', p: 1.5, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+              <Stack direction="row" alignItems="center" spacing={1} mb={1} onClick={() => setShowTextbookModal(true)} sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'action.hover' } }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14c-3.87 0-7-2.13-7-5s3.13-5 7-5 7 2.13 7 5-3.13 5-7 5z" />
+                </svg>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: 700,
+                    color: 'text.primary',
+                    fontSize: '0.8rem',
+                  }}
+                >
+                  Textbook Explanation
+                </Typography>
+              </Stack>
+            </Box>
           </Stack>
         </Paper>
         <Box sx={{
@@ -1840,12 +1826,76 @@ const OrbitSimulation = () => {
                     },
                   }}
                 >
-                  ⭐ Great Job! ⭐
+                  Great Job!
                 </Typography>
               </Box>
             </Fade>
           )}
         </Box>
+
+        <Dialog
+          open={showTextbookModal}
+          onClose={() => setShowTextbookModal(false)}
+          maxWidth="md"
+          fullWidth
+          PaperProps={{
+            sx: {
+              width: '90%',
+              maxWidth: '1200px',
+              maxHeight: '90vh',
+              borderRadius: 3,
+            }
+          }}
+        >
+          <DialogContent sx={{ p: 0, overflow: 'hidden' }}>
+            <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
+              <img
+                src="/simulation1_textbook.png" 
+                alt="Textbook Explanation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  maxHeight: '80vh',
+                  objectFit: 'contain',
+                  display: 'block',
+                  margin: '0 auto',
+                }}
+              />
+              <IconButton
+                onClick={() => setShowTextbookModal(false)}
+                sx={{
+                  position: 'absolute',
+                  top: 8,
+                  right: 8,
+                  bgcolor: 'rgba(0,0,0,0.5)',
+                  color: 'white',
+                  '&:hover': {
+                    bgcolor: 'rgba(0,0,0,0.7)',
+                  },
+                }}
+              >
+                <Close />
+              </IconButton>
+            </Box>
+          </DialogContent>
+          <DialogActions sx={{ p: 2, justifyContent: 'center' }}>
+            <Button
+              onClick={() => setShowTextbookModal(false)}
+              variant="contained"
+              sx={{
+                bgcolor: 'primary.main',
+                fontWeight: 700,
+                px: 4,
+                py: 1.2,
+                '&:hover': {
+                  bgcolor: 'primary.dark',
+                },
+              }}
+            >
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </Container>
   );
