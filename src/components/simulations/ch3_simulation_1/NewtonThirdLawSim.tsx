@@ -1840,9 +1840,9 @@ const OrbitSimulation = () => {
           fullWidth
           PaperProps={{
             sx: {
-              width: '90%',
+              width: '50%',
               maxWidth: '1200px',
-              maxHeight: '90vh',
+              maxHeight: '100vh',
               borderRadius: 3,
             }
           }}
